@@ -157,21 +157,25 @@ describe('Discover', function() {
 
       (function(prefix, cardLength) {
 
+        let cardNumber = [];
+        let intLength = cardLength - prefix.length;
+
         // generate (random int) with (number of digits) equal to (cardLength - prefix.length)
-        let number = (function(prefix, cardLength) {
-          return Math.floor(Math.random() * (Math.pow(10, cardLength - prefix.length)));
+        for (let b = 0; b < (cardLength - prefix.length); b++) {
 
-        })(prefix, cardLength);
-
-        let cardNumber = number.toString().split('');
+          cardNumber.push(function(min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+          }(1, 9));
+        }
         cardNumber.unshift(prefix);
         cardNumber = cardNumber.join('');
 
-        it('has a prefix of ' + prefix + ' and a length of ' + cardLength, function() {
+        it('has a prefix of ' + prefix + ' and a length of ' + cardNumber.length, function() {
           detectNetwork(cardNumber).should.equal('Discover');
         });
 
       })(prefix, cardLength);
+
     }
   }
 
@@ -194,17 +198,20 @@ describe('Maestro', function() {
 
       (function(prefix, cardLength) {
 
+        let cardNumber = [];
+        let intLength = cardLength - prefix.length;
+
         // generate (random int) with (number of digits) equal to (cardLength - prefix.length)
-        let number = (function(cardLength) {
-          return Math.floor(Math.random() * (Math.pow(10, cardLength - prefix.length)));
+        for (let b = 0; b < (cardLength - prefix.length); b++) {
 
-        })(prefix, cardLength);
-
-        let cardNumber = number.toString().split('');
+          cardNumber.push(function(min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+          }(1, 9));
+        }
         cardNumber.unshift(prefix);
         cardNumber = cardNumber.join('');
 
-        it('has a prefix of ' + prefix + ' and a length of ' + cardLength, function() {
+        it('has a prefix of ' + prefix + ' and a length of ' + cardNumber.length, function() {
           detectNetwork(cardNumber).should.equal('Maestro');
         });
 
