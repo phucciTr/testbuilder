@@ -222,3 +222,95 @@ describe('Maestro', function() {
 
 });
 
+describe('China UnionPay', function() {
+  // Write full test coverage for the Maestro card
+
+  var should = chai.should();
+
+  let prefixes = ['624', '625', '626'];
+
+  for (let i = 6282; i <= 6288; i++) {
+    prefixes.push(i.toString());
+  }
+  for (let i = 622126; i <= 622925; i++) {
+    prefixes.push(i.toString());
+  }
+
+  // iterate thru lengths
+  for (let cardLength = 16; cardLength <= 19; cardLength++) {
+
+    // iterate thru prefixes
+    for (let i = 0; i < prefixes.length; i++) {
+
+      let prefix = prefixes[i];
+
+      (function(prefix, cardLength) {
+
+        let cardNumber = [];
+        let intLength = cardLength - prefix.length;
+
+        // generate (random int) with (number of digits) equal to (cardLength - prefix.length)
+        for (let b = 0; b < (cardLength - prefix.length); b++) {
+
+          cardNumber.push(function(min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+          }(1, 9));
+        }
+        cardNumber.unshift(prefix);
+        cardNumber = cardNumber.join('');
+
+        it('has a prefix of ' + prefix + ' and a length of ' + cardNumber.length, function() {
+          detectNetwork(cardNumber).should.equal('China UnionPay');
+        });
+
+      })(prefix, cardLength);
+
+    }
+  }
+
+});
+
+describe('Switch', function() {
+  // Write full test coverage for the Maestro card
+
+  var should = chai.should();
+
+  let prefixes = ['4903', '4905', '4911', '4936', '6333', '6759', '564182', '633110'];
+  let cardLengths = [16, 18, 19];
+
+  // iterate thru lengths
+  for (let c = 0; c < cardLengths.length; c++) {
+
+    let cardLength = cardLengths[c];
+
+    // iterate thru prefixes
+    for (let i = 0; i < prefixes.length; i++) {
+
+      let prefix = prefixes[i];
+
+      (function(prefix, cardLength) {
+
+        let cardNumber = [];
+        let intLength = cardLength - prefix.length;
+
+        // generate (random int) with (number of digits) equal to (cardLength - prefix.length)
+        for (let b = 0; b < (cardLength - prefix.length); b++) {
+
+          cardNumber.push(function(min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+          }(1, 9));
+        }
+        cardNumber.unshift(prefix);
+        cardNumber = cardNumber.join('');
+
+        it('has a prefix of ' + prefix + ' and a length of ' + cardNumber.length, function() {
+          detectNetwork(cardNumber).should.equal('Switch');
+        });
+
+      })(prefix, cardLength);
+
+    }
+  }
+
+});
+
